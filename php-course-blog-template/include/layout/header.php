@@ -1,60 +1,55 @@
-<?php 
+<?php
 
+include "./php-course-blog-template/include/db.php";
+include "./php-course-blog-template/include/config.php";
+
+
+$query = "SELECT * FROM categories";
+$categories = $db->query($query);
+
+// echo "<pre>";
+// print_r($categories->fetchAll())
 ?>
 
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>php tutorial || blog project || webprog.io</title>
 
-        <link
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>php tutorial || blog project || webprog.io</title>
+
+    <link
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-        />
-        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
+    <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-            crossorigin="anonymous"
-        />
+            crossorigin="anonymous"/>
 
-        <link rel="stylesheet" href="./assets/css/style.css" />
-    </head>
+    <link rel="stylesheet" href="./php-course-blog-template/app-template/assets/css/style.css" />
+</head>
 
-    <body>
-        <div class="container py-3">
-            <header
-                class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom"
-            >
-                <a
-                    href="index.html"
-                    class="fs-4 fw-medium link-body-emphasis text-decoration-none"
-                >
-                    webprog.io
-                </a>
+<body>
+<div class="container py-3">
+    <header
+            class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+        <a
+                href="index.php"
+                class="fs-4 fw-medium link-body-emphasis text-decoration-none">
+            webprog.io
+        </a>
 
-                <nav class="d-inline-flex mt-2 mt-md-0 me-md-auto">
+        <nav class="d-inline-flex mt-2 mt-md-0 me-md-auto">
+            <?php if ($categories->rowCount() > 0) : ?>
+                <?php foreach ($categories as $category) : ?>
                     <a
-                        class="fw-bold me-3 py-2 link-body-emphasis text-decoration-none"
-                        href="#"
-                        >طبیعت</a
-                    >
-                    <a
-                        class="me-3 py-2 link-body-emphasis text-decoration-none"
-                        href="#"
-                        >گردشگری</a
-                    >
-                    <a
-                        class="me-3 py-2 link-body-emphasis text-decoration-none"
-                        href="#"
-                        >تکنولوژی</a
-                    >
-                    <a
-                        class="me-3 py-2 link-body-emphasis text-decoration-none"
-                        href="#"
-                        >متفرقه</a
-                    >
-                </nav>
-            </header>
+                            class="me-3 py-2 link-body-emphasis text-decoration-none <?= (isset($_GET['category'])) && $category['id'] == $_GET['category'] ? 'fw-bold' : '' ?>"
+                            href="index.php?category=<?= $category['id'] ?>">
+                        <?= $category['title'] ?>
+                    </a>
+                <?php endforeach ?>
+            <?php endif ?>
+        </nav>
+    </header>

@@ -1,78 +1,63 @@
-    <!-- Slider Section -->
-    <section>
-        <div id="carousel" class="carousel slide">
-            <div class="carousel-indicators">
-                <button
+<?php
+/** @var PDO $db */
+
+$query = "SELECT * FROM posts_slider";
+$sliders = $db->query($query);
+?>
+<!-- Slider Section -->
+<section>
+    <div id="carousel" class="carousel slide">
+        <div class="carousel-indicators">
+            <button
                     type="button"
                     data-bs-target="#carousel"
                     data-bs-slide-to="0"
                     class="active"></button>
-                <button
+            <button
                     type="button"
                     data-bs-target="#carousel"
                     data-bs-slide-to="1"></button>
-                <button
+            <button
                     type="button"
                     data-bs-target="#carousel"
                     data-bs-slide-to="2"></button>
-            </div>
-            <div class="carousel-inner rounded">
-                <div
-                    class="carousel-item overlay carousel-height active">
-                    <img
-                        src="./php-course-blog-template/app-template/assets/images/1.jpg"
-                        class="d-block w-100"
-                        alt="post-image" />
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>لورم ایپسوم متن</h5>
-                        <p>
-                            لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم از صنعت چاپ و با استفاده
-                        </p>
+        </div>
+        <div class="carousel-inner rounded">
+            <?php if ($sliders->rowCount() > 0): ?>
+                <?php foreach ($sliders as $slider): ?>
+                    <?php
+                    $post_id = $slider['post_id'];
+                    $post = $db->query("SELECT * FROM posts WHERE id = $post_id")->fetch();
+                    ?>
+                    <div
+                            class="carousel-item overlay carousel-height <?= ($slider['active']) ? 'active' : '' ?>">
+                        <img
+                                src="./php-course-blog-template/uploads/<?= $post['image'] ?>"
+                                class="d-block w-100"
+                                alt="post-image"/>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5> <?= $post['title'] ?> </h5>
+                            <p> <?= substr($post['body'],0,200). "..." ?> </p>
+                        </div>
                     </div>
-                </div>
-                <div class="carousel-item carousel-height overlay">
-                    <img
-                        src="./php-course-blog-template/app-template/assets/images/2.jpg"
-                        class="d-block w-100"
-                        alt="post-image" />
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>لورم ایپسوم متن</h5>
-                        <p>
-                            لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم از صنعت چاپ و با استفاده
-                        </p>
-                    </div>
-                </div>
-                <div class="carousel-item carousel-height overlay">
-                    <img
-                        src="./php-course-blog-template/app-template/assets/images/3.jpg"
-                        class="d-block w-100"
-                        alt="post-image" />
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>لورم ایپسوم متن</h5>
-                        <p>
-                            لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم از صنعت چاپ و با استفاده
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <button
+                <?php endforeach ?>
+            <?php endif ?>
+        </div>
+        <button
                 class="carousel-control-prev"
                 type="button"
                 data-bs-target="#carousel"
                 data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button
                 class="carousel-control-next"
                 type="button"
                 data-bs-target="#carousel"
                 data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </section>
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
