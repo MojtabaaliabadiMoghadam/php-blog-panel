@@ -1,6 +1,27 @@
 <?php
 include "./includes/layouts/header.php";
 
+if (isset($_GET['entity']) && isset($_GET['action']) && isset($_GET['id'])) {
+    $entity = $_GET['entity'];
+    $action = $_GET['action'];
+    $id = $_GET['id'];
+
+    switch ($entity) {
+        case 'posts':
+            $query = $db->prepare('DELETE FROM posts WHERE id = :id');
+            break;
+        case 'comments':
+            $query = $db->prepare('DELETE FROM comments WHERE id = :id');
+        
+            break;
+        case 'categories':
+            $query = $db->prepare('DELETE FROM categories WHERE id = :id');
+            break;
+    }
+   $query->execute(['id' => $id]);
+}
+
+
 $posts = $db->query("SELECT * FROM posts ORDER BY id DESC LIMIT 5");
 $comments = $db->query("SELECT * FROM comments ORDER BY id DESC LIMIT 5");
 $categories = $db->query("SELECT * FROM categories ORDER BY id DESC");
@@ -48,7 +69,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY id DESC");
                                                 href="#"
                                                 class="btn btn-sm btn-outline-dark">ویرایش</a>
                                             <a
-                                                href="#"
+                                                href="index.php?entity=posts&action=delete&id=<?= $post['id'] ?>"
                                                 class="btn btn-sm btn-outline-danger">حذف</a>
                                         </td>
                                     </tr>
@@ -93,7 +114,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY id DESC");
                                                 href="#"
                                                 class="btn btn-sm btn-outline-dark disabled">تایید شده</a>
                                             <a
-                                                href="#"
+                                                href="index.php?entity=comments&action=delete&id=<?= $comment['id'] ?>"
                                                 class="btn btn-sm btn-outline-danger">حذف</a>
                                         </td>
                                     </tr>
@@ -114,33 +135,33 @@ $categories = $db->query("SELECT * FROM categories ORDER BY id DESC");
             <div class="mt-4">
                 <h4 class="text-secondary fw-bold">دسته بندی</h4>
                 <?php if ($categories->rowCount() > 0) : ?>
-                <div class="table-responsive small">
-                    <table class="table table-hover align-middle">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>عنوان</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($categories as $category) : ?>
-                            <tr>
-                                <th><?= $category['id'] ?></th>
-                                <td><?= $category['title'] ?></td>
-                                <td>
-                                    <a
-                                        href="#"
-                                        class="btn btn-sm btn-outline-dark">ویرایش</a>
-                                    <a
-                                        href="#"
-                                        class="btn btn-sm btn-outline-danger">حذف</a>
-                                </td>
-                            </tr>
-                             <?php endforeach ?>
-                        </tbody>
-                    </table>
-                </div>
+                    <div class="table-responsive small">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>عنوان</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($categories as $category) : ?>
+                                    <tr>
+                                        <th><?= $category['id'] ?></th>
+                                        <td><?= $category['title'] ?></td>
+                                        <td>
+                                            <a
+                                                href="#"
+                                                class="btn btn-sm btn-outline-dark">ویرایش</a>
+                                            <a
+                                                href="index.php?entity=categories&action=delete&id=<?= $category['id'] ?>"
+                                                class="btn btn-sm btn-outline-danger">حذف</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else : ?>
                     <div class="col">
                         <div class="alert alert-danger">
