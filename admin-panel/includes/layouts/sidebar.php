@@ -17,8 +17,8 @@
               <ul class="nav flex-column pe-3">
                   <li class="nav-item">
                       <a
-                          class="nav-link link-body-emphasis text-decoration-none d-flex align-items-center gap-2 text-secondary"
-                          href="index.html">
+                          class="nav-link link-body-emphasis text-decoration-none d-flex align-items-center gap-2 <?= str_contains($path,'pages') ? '' : 'text-secondary' ?>"
+                          href="/admin-panel/index.php">
                           <i
                               class="bi bi-house-fill fs-4 text-secondary"></i>
                           <span class="fw-bold">داشبورد</span>
@@ -27,8 +27,8 @@
 
                   <li class="nav-item">
                       <a
-                          class="nav-link link-body-emphasis text-decoration-none d-flex align-items-center gap-2"
-                          href="./pages/posts/index.html">
+                          class="nav-link link-body-emphasis text-decoration-none d-flex align-items-center gap-2 <?= str_contains($path,'posts') ? 'text-secondary' : '' ?>"
+                          href="/admin-panel/pages/posts">
                           <i
                               class="bi bi-file-earmark-image-fill fs-4 text-secondary"></i>
                           <span class="fw-bold">مقالات</span>
@@ -37,8 +37,8 @@
 
                   <li class="nav-item">
                       <a
-                          class="nav-link link-body-emphasis text-decoration-none d-flex align-items-center gap-2"
-                          href="./pages/categories/index.html">
+                          class="nav-link link-body-emphasis text-decoration-none d-flex align-items-center gap-2 <?= str_contains($path,'categories') ? 'text-secondary' : '' ?>"
+                          href="/admin-panel/pages/categories">
                           <i
                               class="bi bi-folder-fill fs-4 text-secondary"></i>
 
@@ -48,8 +48,8 @@
 
                   <li class="nav-item">
                       <a
-                          class="nav-link link-body-emphasis text-decoration-none d-flex align-items-center gap-2"
-                          href="./pages/comments/index.html">
+                          class="nav-link link-body-emphasis text-decoration-none d-flex align-items-center gap-2 <?= str_contains($path,'comments') ? 'text-secondary' : '' ?>"
+                          href="/admin-panel/pages/comments">
                           <i
                               class="bi bi-chat-left-text-fill fs-4 text-secondary"></i>
 
