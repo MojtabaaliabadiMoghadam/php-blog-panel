@@ -10,7 +10,16 @@ $invalidInputBody = '';
 $invalidInputImage = '';
 
 $message = '';
-if (isset($_POST['addPost'])) {
+
+if (isset($_GET['id'])) {
+    $post_id = $_GET['id'];
+    $query = "SELECT * FROM posts WHERE id = :id";
+    $post = $db->prepare($query);
+    $post->execute(['id' => $post_id]);
+    $post = $post->fetch();
+}
+
+if (isset($_POST['updatePost'])) {
     if (empty(trim($_POST['title']))) {
         $invalidInputTitle = 'فیلد نام الزامی است';
     }
@@ -46,6 +55,7 @@ if (isset($_POST['addPost'])) {
 }
 
 ?>
+
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar Section -->
@@ -54,19 +64,24 @@ if (isset($_POST['addPost'])) {
             ?>
 
             <!-- Main Section -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
                 <div
                         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
                 >
-                    <h1 class="fs-3 fw-bold">ایجاد مقاله</h1>
+                    <h1 class="fs-3 fw-bold">ویرایش مقاله</h1>
                 </div>
 
                 <!-- Posts -->
                 <div class="mt-4">
-                    <form class="row g-4" method="post" enctype="multipart/form-data">
+                    <form class="row g-4">
                         <div class="col-12 col-sm-6 col-md-4">
                             <label class="form-label">عنوان مقاله</label>
-                            <input name="title" type="text" class="form-control"/>
+                            <input
+                                    type="text"
+                                    name="title"
+                                    class="form-control"
+                                    value="<?= $post['title'] ?>"
+                            />
                             <div class="form-text text-danger">
                                 <?= $invalidInputTitle ?>
                             </div>
@@ -74,10 +89,12 @@ if (isset($_POST['addPost'])) {
 
                         <div class="col-12 col-sm-6 col-md-4">
                             <label class="form-label">نویسنده مقاله</label>
-                            <input name="author" type="text" class="form-control"/>
-                            <div class="form-text text-danger">
-                                <?= $invalidInputAuthor ?>
-                            </div>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    value="<?= $post['author'] ?>"
+                                    name="author"
+                            />
                         </div>
 
                         <div class="col-12 col-sm-6 col-md-4">
@@ -87,7 +104,10 @@ if (isset($_POST['addPost'])) {
                             <select class="form-select" name="categoryId">
                                 <?php if ($categories->rowCount() > 0): ?>
                                     <?php foreach ($categories as $category): ?>
-                                        <option value="<?= $category['id'] ?>"><?= $category['title'] ?></option>
+                                        <option
+                                            <?= ($post['category_id'] == $category['id']) ? 'selected' : '' ?>
+                                                value="<?= $category['id'] ?>"><?= $category['title'] ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 <?php endif ?>
                             </select>
@@ -97,29 +117,25 @@ if (isset($_POST['addPost'])) {
                             <label for="formFile" class="form-label"
                             >تصویر مقاله</label
                             >
-                            <input name="image" class="form-control" type="file"/>
-                            <div class="form-text text-danger">
-                                <?= $invalidInputImage ?>
-                            </div>
+                            <input class="form-control" type="file"/>
                         </div>
 
                         <div class="col-12">
                             <label for="formFile" class="form-label"
                             >متن مقاله</label
                             >
-                            <textarea
-                                    name="body"
-                                    class="form-control"
-                                    rows="6"
-                            ></textarea>
-                            <div class="form-text text-danger">
-                                <?= $invalidInputAuthor ?>
-                            </div>
+                            <textarea class="form-control" rows="8" value="<?= $post['body'] ?>">
+                            </textarea>
+                        </div>
+
+
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <img class="rounded" src="../../assets/images/1.jpg" width="300"/>
                         </div>
 
                         <div class="col-12">
-                            <button name="addPost" type="submit" class="btn btn-dark">
-                                ایجاد
+                            <button type="submit" class="btn btn-dark">
+                                ویرایش
                             </button>
                         </div>
                     </form>
